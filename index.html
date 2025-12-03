@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .view {
+      display: none;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* Landing Page */
+    #landing-page {
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    #landing-page h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #7f8c8d;
+      margin-bottom: 60px;
+    }
+
+    .entry-type-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .entry-type-btn {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .entry-type-btn:hover {
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    }
+
+    .entry-type-btn .btn-label {
+      display: block;
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .entry-type-btn .btn-desc {
+      display: block;
+      font-size: 1em;
+      color: #7f8c8d;
+    }
+
+    .nav-links {
+      margin-top: 40px;
+    }
+
+    .nav-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #2980b9;
+    }
+
+    /* Entry Editor */
+    .editor-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: #95a5a6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #7f8c8d;
+    }
+
+    #entry-type-title {
+      font-size: 2em;
+      color: #2c3e50;
+    }
+
+    .editor-meta {
+      margin-bottom: 20px;
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+
+    #entry-content {
+      width: 100%;
+      min-height: 400px;
+      padding: 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-family: inherit;
+      resize: vertical;
+      margin-bottom: 20px;
+    }
+
+    #entry-content:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .editor-actions {
+      text-align: right;
+    }
+
+    .save-btn {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .save-btn:hover {
+      background: #229954;
+    }
+
+    /* Entries List */
+    .list-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .list-header h2 {
+      font-size: 2em;
+      color: #2c3e50;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 2px solid #e0e0e0;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9em;
+    }
+
+    .filter-btn:hover {
+      border-color: #3498db;
+    }
+
+    .filter-btn.active {
+      background: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+
+    .export-section {
+      margin-bottom: 30px;
+    }
+
+    .export-btn {
+      background: #9b59b6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+
+    .export-btn:hover {
+      background: #8e44ad;
+    }
+
+    .entries-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .entry-item {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .entry-item:hover {
+      border-color: #3498db;
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .entry-type-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .entry-type-brain-dump {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .entry-type-inspiration {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .entry-type-highlights {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .entry-date {
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+
+    .entry-preview {
+      color: #555;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .no-entries {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Page -->
+  <div id="landing-page" class="view active">
+    <h1>Journal</h1>
+    <p class="subtitle">Choose your entry type</p>
+    <div class="entry-type-buttons">
+      <button class="entry-type-btn" data-type="brain-dump">
+        <span class="btn-label">Brain Dump</span>
+        <span class="btn-desc">Rough, messy thoughts</span>
+      </button>
+      <button class="entry-type-btn" data-type="inspiration">
+        <span class="btn-label">Inspiration</span>
+        <span class="btn-desc">Random ideas and thoughts</span>
+      </button>
+      <button class="entry-type-btn" data-type="highlights">
+        <span class="btn-label">Highlights</span>
+        <span class="btn-desc">Brief positive memories</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <button id="view-entries-btn" class="nav-btn">View All Entries</button>
+    </div>
+  </div>
+
+  <!-- Entry Editor -->
+  <div id="entry-editor" class="view">
+    <div class="editor-header">
+      <button id="back-to-landing" class="back-btn">← Back</button>
+      <h2 id="entry-type-title"></h2>
+    </div>
+    <div class="editor-meta">
+      <span id="entry-timestamp"></span>
+    </div>
+    <textarea id="entry-content" placeholder="Start writing..."></textarea>
+    <div class="editor-actions">
+      <button id="save-entry-btn" class="save-btn">Save Entry</button>
+    </div>
+  </div>
+
+  <!-- Entries List -->
+  <div id="entries-list" class="view">
+    <div class="list-header">
+      <button id="back-to-landing-from-list" class="back-btn">← Back</button>
+      <h2>All Entries</h2>
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="brain-dump">Brain Dump</button>
+      <button class="filter-btn" data-filter="inspiration">Inspiration</button>
+      <button class="filter-btn" data-filter="highlights">Highlights</button>
+    </div>
+    <div class="export-section">
+      <button id="export-btn" class="export-btn">Export Entries</button>
+    </div>
+    <div id="entries-container" class="entries-container">
+      <!-- Entries will be dynamically inserted here -->
+    </div>
+    <div id="no-entries" class="no-entries" style="display: none;">
+      <p>No entries yet. Create your first entry from the home page!</p>
+    </div>
+  </div>
+
+  <script>
+    // Storage key for entries
+    const STORAGE_KEY = 'journal-entries';
+
+    // View management
+    const views = {
+      landing: document.getElementById('landing-page'),
+      editor: document.getElementById('entry-editor'),
+      list: document.getElementById('entries-list')
+    };
+
+    let currentEntry = null;
+    let allEntries = [];
+    let currentFilter = 'all';
+
+    function showView(viewName) {
+      Object.values(views).forEach(view => view.classList.remove('active'));
+      views[viewName].classList.add('active');
+    }
+
+    // Storage functions
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function createEntry(type) {
+      const timestamp = new Date();
+      const entry = {
+        id: generateId(),
+        type,
+        startedAt: timestamp.toISOString(),
+        content: ''
+      };
+      return entry;
+    }
+
+    function saveEntryToStorage(entry) {
+      const entries = getAllEntriesFromStorage();
+      const index = entries.findIndex(e => e.id === entry.id);
+      if (index >= 0) {
+        entries[index] = entry;
+      } else {
+        entries.push(entry);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function getAllEntriesFromStorage() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return [];
+      const entries = JSON.parse(stored);
+      // Sort by startedAt, newest first
+      entries.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+      return entries;
+    }
+
+    // Landing page handlers
+    document.querySelectorAll('.entry-type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        createNewEntry(type);
+      });
+    });
+
+    document.getElementById('view-entries-btn').addEventListener('click', () => {
+      loadEntries();
+      showView('list');
+    });
+
+    // Back buttons
+    document.getElementById('back-to-landing').addEventListener('click', () => {
+      showView('landing');
+      currentEntry = null;
+    });
+
+    document.getElementById('back-to-landing-from-list').addEventListener('click', () => {
+      showView('landing');
+    });
+
+    // Create new entry
+    function createNewEntry(type) {
+      const entry = createEntry(type);
+      currentEntry = entry;
+      
+      // Update UI
+      const typeLabels = {
+        'brain-dump': 'Brain Dump',
+        'inspiration': 'Inspiration',
+        'highlights': 'Highlights'
+      };
+      
+      document.getElementById('entry-type-title').textContent = typeLabels[type];
+      const timestamp = new Date(entry.startedAt);
+      document.getElementById('entry-timestamp').textContent = 
+        `Started: ${timestamp.toLocaleDateString()} at ${timestamp.toLocaleTimeString()}`;
+      document.getElementById('entry-content').value = '';
+      
+      showView('editor');
+      document.getElementById('entry-content').focus();
+    }
+
+    // Save entry
+    document.getElementById('save-entry-btn').addEventListener('click', () => {
+      if (!currentEntry) return;
+      
+      const content = document.getElementById('entry-content').value;
+      currentEntry.content = content;
+      
+      saveEntryToStorage(currentEntry);
+      alert('Entry saved successfully!');
+      showView('landing');
+      currentEntry = null;
+    });
+
+    // Load and display entries
+    function loadEntries() {
+      allEntries = getAllEntriesFromStorage();
+      displayEntries();
+    }
+
+    function displayEntries() {
+      const container = document.getElementById('entries-container');
+      const noEntries = document.getElementById('no-entries');
+      
+      let filteredEntries = allEntries;
+      if (currentFilter !== 'all') {
+        filteredEntries = allEntries.filter(e => e.type === currentFilter);
+      }
+      
+      if (filteredEntries.length === 0) {
+        container.innerHTML = '';
+        noEntries.style.display = 'block';
+        return;
+      }
+      
+      noEntries.style.display = 'none';
+      container.innerHTML = '';
+      
+      filteredEntries.forEach(entry => {
+        const entryEl = createEntryElement(entry);
+        container.appendChild(entryEl);
+      });
+    }
+
+    function createEntryElement(entry) {
+      const div = document.createElement('div');
+      div.className = 'entry-item';
+      
+      const date = new Date(entry.startedAt);
+      const dateStr = date.toLocaleDateString();
+      const timeStr = date.toLocaleTimeString();
+      
+      const typeLabels = {
+        'brain-dump': 'Brain Dump',
+        'inspiration': 'Inspiration',
+        'highlights': 'Highlights'
+      };
+      
+      const typeLabel = typeLabels[entry.type] || entry.type;
+      const preview = entry.content ? 
+        (entry.content.length > 100 ? entry.content.substring(0, 100) + '...' : entry.content) :
+        '(No content)';
+      
+      div.innerHTML = `
+        <div class="entry-header">
+          <span class="entry-type-badge entry-type-${entry.type}">${typeLabel}</span>
+          <span class="entry-date">${dateStr} at ${timeStr}</span>
+        </div>
+        <div class="entry-preview">${preview}</div>
+      `;
+      
+      return div;
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        displayEntries();
+      });
+    });
+
+    // Export functionality
+    document.getElementById('export-btn').addEventListener('click', () => {
+      let entriesToExport = allEntries;
+      if (currentFilter && currentFilter !== 'all') {
+        entriesToExport = allEntries.filter(e => e.type === currentFilter);
+      }
+
+      let exportText = 'JOURNAL EXPORT\n';
+      exportText += '='.repeat(50) + '\n\n';
+
+      entriesToExport.forEach((entry, index) => {
+        const date = new Date(entry.startedAt);
+        const dateStr = date.toLocaleDateString();
+        const timeStr = date.toLocaleTimeString();
+        const typeLabel = entry.type.split('-').map(w => 
+          w.charAt(0).toUpperCase() + w.slice(1)
+        ).join(' ');
+
+        exportText += `Entry ${index + 1}: ${typeLabel}\n`;
+        exportText += `Date: ${dateStr} at ${timeStr}\n`;
+        exportText += '-'.repeat(50) + '\n';
+        exportText += entry.content || '(No content)\n';
+        exportText += '\n' + '='.repeat(50) + '\n\n';
+      });
+
+      // Create download
+      const blob = new Blob([exportText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateStr = new Date().toISOString().split('T')[0];
+      a.href = url;
+      a.download = `journal-export-${dateStr}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      alert('Entries exported successfully!');
+    });
+  </script>
+</body>
+</html>
+
