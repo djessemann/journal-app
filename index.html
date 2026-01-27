@@ -64,7 +64,6 @@
     .entry-type-btn {
       background: #ffffff;
       border: 2px solid #e5e0d8;
-      border-radius: 12px;
       padding: 24px 32px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -72,9 +71,21 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
+    .entry-type-btn:nth-child(1) {
+      border-radius: 30% 70% 70% 30% / 50% 50% 50% 50%;
+    }
+
+    .entry-type-btn:nth-child(2) {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    .entry-type-btn:nth-child(3) {
+      border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+    }
+
     .entry-type-btn:hover {
       background: #fefefe;
-      transform: translateY(-2px);
+      transform: translateY(-2px) rotate(-1deg);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       border-color: #d4cfc5;
     }
