@@ -321,7 +321,7 @@
       border-radius: 6px;
       font-size: 0.75em;
       font-weight: 600;
-      text-transform: uppercase;
+      text-transform: none;
       letter-spacing: 0.5px;
     }
 
@@ -365,62 +365,62 @@
 <body>
   <!-- Landing Page -->
   <div id="landing-page" class="view active">
-    <h1>Journal</h1>
-    <p class="subtitle">Choose your entry type</p>
+    <h1>journal</h1>
+    <p class="subtitle">choose your entry type</p>
     <div class="entry-type-buttons">
       <button class="entry-type-btn" data-type="brain-dump">
-        <span class="btn-label">Brain Dump</span>
+        <span class="btn-label">brain dump</span>
         <span class="btn-desc">Rough, messy thoughts</span>
       </button>
       <button class="entry-type-btn" data-type="inspiration">
-        <span class="btn-label">Inspiration</span>
+        <span class="btn-label">inspiration</span>
         <span class="btn-desc">Random ideas and thoughts</span>
       </button>
       <button class="entry-type-btn" data-type="highlights">
-        <span class="btn-label">Highlights</span>
+        <span class="btn-label">highlights</span>
         <span class="btn-desc">Brief positive memories</span>
       </button>
     </div>
     <div class="nav-links">
-      <button id="view-entries-btn" class="nav-btn">View All Entries</button>
+      <button id="view-entries-btn" class="nav-btn">view all entries</button>
     </div>
   </div>
 
   <!-- Entry Editor -->
   <div id="entry-editor" class="view">
     <div class="editor-header">
-      <button id="back-to-landing" class="back-btn">← Back</button>
+      <button id="back-to-landing" class="back-btn">← back</button>
       <h2 id="entry-type-title"></h2>
     </div>
     <div class="editor-meta">
       <span id="entry-timestamp"></span>
     </div>
-    <textarea id="entry-content" placeholder="Start writing..."></textarea>
+    <textarea id="entry-content" placeholder="start writing..."></textarea>
     <div class="editor-actions">
-      <button id="save-entry-btn" class="save-btn">Save Entry</button>
+      <button id="save-entry-btn" class="save-btn">save entry</button>
     </div>
   </div>
 
   <!-- Entries List -->
   <div id="entries-list" class="view">
     <div class="list-header">
-      <button id="back-to-landing-from-list" class="back-btn">← Back</button>
-      <h2>All Entries</h2>
+      <button id="back-to-landing-from-list" class="back-btn">← back</button>
+      <h2>all entries</h2>
     </div>
     <div class="filter-buttons">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="brain-dump">Brain Dump</button>
-      <button class="filter-btn" data-filter="inspiration">Inspiration</button>
-      <button class="filter-btn" data-filter="highlights">Highlights</button>
+      <button class="filter-btn active" data-filter="all">all</button>
+      <button class="filter-btn" data-filter="brain-dump">brain dump</button>
+      <button class="filter-btn" data-filter="inspiration">inspiration</button>
+      <button class="filter-btn" data-filter="highlights">highlights</button>
     </div>
     <div class="export-section">
-      <button id="export-btn" class="export-btn">Export Entries</button>
+      <button id="export-btn" class="export-btn">export entries</button>
     </div>
     <div id="entries-container" class="entries-container">
       <!-- Entries will be dynamically inserted here -->
     </div>
     <div id="no-entries" class="no-entries" style="display: none;">
-      <p>No entries yet. Create your first entry from the home page!</p>
+      <p>no entries yet. create your first entry from the home page!</p>
     </div>
   </div>
 
@@ -510,15 +510,15 @@
       
       // Update UI
       const typeLabels = {
-        'brain-dump': 'Brain Dump',
-        'inspiration': 'Inspiration',
-        'highlights': 'Highlights'
+        'brain-dump': 'brain dump',
+        'inspiration': 'inspiration',
+        'highlights': 'highlights'
       };
-      
+
       document.getElementById('entry-type-title').textContent = typeLabels[type];
       const timestamp = new Date(entry.startedAt);
-      document.getElementById('entry-timestamp').textContent = 
-        `Started: ${timestamp.toLocaleDateString()} at ${timestamp.toLocaleTimeString()}`;
+      document.getElementById('entry-timestamp').textContent =
+        `started: ${timestamp.toLocaleDateString()} at ${timestamp.toLocaleTimeString()}`;
       document.getElementById('entry-content').value = '';
       
       showView('editor');
@@ -533,7 +533,7 @@
       currentEntry.content = content;
       
       saveEntryToStorage(currentEntry);
-      alert('Entry saved successfully!');
+      alert('entry saved successfully!');
       showView('landing');
       currentEntry = null;
     });
@@ -577,15 +577,15 @@
       const timeStr = date.toLocaleTimeString();
       
       const typeLabels = {
-        'brain-dump': 'Brain Dump',
-        'inspiration': 'Inspiration',
-        'highlights': 'Highlights'
+        'brain-dump': 'brain dump',
+        'inspiration': 'inspiration',
+        'highlights': 'highlights'
       };
-      
+
       const typeLabel = typeLabels[entry.type] || entry.type;
-      const preview = entry.content ? 
+      const preview = entry.content ?
         (entry.content.length > 100 ? entry.content.substring(0, 100) + '...' : entry.content) :
-        '(No content)';
+        '(no content)';
       
       div.innerHTML = `
         <div class="entry-header">
@@ -615,21 +615,19 @@
         entriesToExport = allEntries.filter(e => e.type === currentFilter);
       }
 
-      let exportText = 'JOURNAL EXPORT\n';
+      let exportText = 'journal export\n';
       exportText += '='.repeat(50) + '\n\n';
 
       entriesToExport.forEach((entry, index) => {
         const date = new Date(entry.startedAt);
         const dateStr = date.toLocaleDateString();
         const timeStr = date.toLocaleTimeString();
-        const typeLabel = entry.type.split('-').map(w => 
-          w.charAt(0).toUpperCase() + w.slice(1)
-        ).join(' ');
+        const typeLabel = entry.type.replace('-', ' ');
 
-        exportText += `Entry ${index + 1}: ${typeLabel}\n`;
-        exportText += `Date: ${dateStr} at ${timeStr}\n`;
+        exportText += `entry ${index + 1}: ${typeLabel}\n`;
+        exportText += `date: ${dateStr} at ${timeStr}\n`;
         exportText += '-'.repeat(50) + '\n';
-        exportText += entry.content || '(No content)\n';
+        exportText += entry.content || '(no content)\n';
         exportText += '\n' + '='.repeat(50) + '\n\n';
       });
 
@@ -644,8 +642,8 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      
-      alert('Entries exported successfully!');
+
+      alert('entries exported successfully!');
     });
   </script>
 </body>
