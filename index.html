@@ -13,9 +13,9 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f7f4ef;
       min-height: 100vh;
-      color: #1a1a2e;
+      color: #2d2d2d;
       line-height: 1.6;
     }
 
@@ -39,59 +39,56 @@
     #landing-page h1 {
       font-size: 3.5em;
       margin-bottom: 10px;
-      color: white;
+      color: #2d2d2d;
       font-weight: 700;
       letter-spacing: -0.5px;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .subtitle {
-      font-size: 1.3em;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.2em;
+      color: #6b6b6b;
       margin-bottom: 60px;
-      font-weight: 300;
-      letter-spacing: 0.5px;
+      font-weight: 400;
+      letter-spacing: 0.3px;
     }
 
     .entry-type-buttons {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
+      flex-direction: row;
+      gap: 16px;
       margin-bottom: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .entry-type-btn {
-      background: rgba(255, 255, 255, 0.95);
-      border: none;
-      border-radius: 16px;
-      padding: 32px;
+      background: #ffffff;
+      border: 2px solid #e5e0d8;
+      border-radius: 12px;
+      padding: 24px 32px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      text-align: left;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .entry-type-btn:hover {
-      background: white;
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      background: #fefefe;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: #d4cfc5;
     }
 
     .entry-type-btn .btn-label {
       display: block;
-      font-size: 1.6em;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #2d2d2d;
+      letter-spacing: 0.3px;
     }
 
     .entry-type-btn .btn-desc {
-      display: block;
-      font-size: 1em;
-      color: #6b7280;
-      font-weight: 400;
+      display: none;
     }
 
     .nav-links {
@@ -99,32 +96,29 @@
     }
 
     .nav-btn {
-      background: rgba(255, 255, 255, 0.25);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-size: 1em;
-      font-weight: 600;
+      background: #2d2d2d;
+      color: #f7f4ef;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 0.95em;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
     }
 
     .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.35);
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      background: #3d3d3d;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     /* Entry Editor */
     #entry-editor {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
+      background: #ffffff;
+      border-radius: 16px;
       padding: 48px !important;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     }
 
     .editor-header {
@@ -135,27 +129,26 @@
     }
 
     .back-btn {
-      background: rgba(0, 0, 0, 0.05);
-      color: #1a1a2e;
+      background: #f0ebe3;
+      color: #2d2d2d;
       border: none;
-      padding: 10px 20px;
-      border-radius: 50px;
+      padding: 8px 16px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 0.9em;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-weight: 500;
+      transition: all 0.2s ease;
     }
 
     .back-btn:hover {
-      background: rgba(0, 0, 0, 0.1);
-      transform: translateX(-2px);
+      background: #e5e0d8;
     }
 
     #entry-type-title {
-      font-size: 2.2em;
-      color: #1a1a2e;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 2em;
+      color: #2d2d2d;
+      font-weight: 600;
+      letter-spacing: -0.3px;
     }
 
     .editor-meta {
@@ -168,23 +161,23 @@
     #entry-content {
       width: 100%;
       min-height: 400px;
-      padding: 24px;
-      border: 2px solid rgba(0, 0, 0, 0.08);
-      border-radius: 16px;
-      font-size: 1.1em;
+      padding: 20px;
+      border: 2px solid #e5e0d8;
+      border-radius: 8px;
+      font-size: 1em;
       font-family: inherit;
       resize: vertical;
       margin-bottom: 24px;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.6);
-      line-height: 1.8;
+      transition: all 0.2s ease;
+      background: #fefefe;
+      line-height: 1.7;
+      color: #2d2d2d;
     }
 
     #entry-content:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #c4bfb4;
       background: white;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     .editor-actions {
@@ -192,30 +185,29 @@
     }
 
     .save-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: #2d2d2d;
+      color: #f7f4ef;
       border: none;
-      padding: 14px 36px;
-      border-radius: 50px;
-      font-size: 1.1em;
-      font-weight: 600;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      transition: all 0.2s ease;
     }
 
     .save-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      background: #3d3d3d;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     /* Entries List */
     #entries-list {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
+      background: #ffffff;
+      border-radius: 16px;
       padding: 48px !important;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     }
 
     .list-header {
@@ -226,10 +218,10 @@
     }
 
     .list-header h2 {
-      font-size: 2.2em;
-      color: #1a1a2e;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 2em;
+      color: #2d2d2d;
+      font-weight: 600;
+      letter-spacing: -0.3px;
     }
 
     .filter-buttons {
@@ -240,27 +232,25 @@
     }
 
     .filter-btn {
-      background: rgba(0, 0, 0, 0.04);
+      background: #f0ebe3;
       border: 2px solid transparent;
-      padding: 10px 20px;
-      border-radius: 50px;
+      padding: 8px 18px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       font-size: 0.9em;
-      font-weight: 600;
-      color: #4b5563;
+      font-weight: 500;
+      color: #2d2d2d;
     }
 
     .filter-btn:hover {
-      background: rgba(0, 0, 0, 0.08);
-      color: #1a1a2e;
+      background: #e5e0d8;
     }
 
     .filter-btn.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: #2d2d2d;
+      color: #f7f4ef;
       border-color: transparent;
-      box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
     }
 
     .export-section {
@@ -268,21 +258,19 @@
     }
 
     .export-btn {
-      background: rgba(0, 0, 0, 0.06);
-      color: #1a1a2e;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      padding: 12px 24px;
-      border-radius: 50px;
+      background: #f0ebe3;
+      color: #2d2d2d;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1em;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-size: 0.95em;
+      font-weight: 500;
+      transition: all 0.2s ease;
     }
 
     .export-btn:hover {
-      background: rgba(0, 0, 0, 0.1);
-      border-color: rgba(0, 0, 0, 0.15);
-      transform: translateY(-1px);
+      background: #e5e0d8;
     }
 
     .entries-container {
@@ -292,18 +280,17 @@
     }
 
     .entry-item {
-      background: rgba(255, 255, 255, 0.7);
-      border: 2px solid rgba(0, 0, 0, 0.06);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all 0.3s ease;
+      background: #fefefe;
+      border: 2px solid #e5e0d8;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.2s ease;
     }
 
     .entry-item:hover {
       background: white;
-      border-color: rgba(102, 126, 234, 0.3);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      transform: translateY(-2px);
+      border-color: #d4cfc5;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
     .entry-header {
@@ -316,37 +303,37 @@
     }
 
     .entry-type-badge {
-      padding: 6px 16px;
-      border-radius: 50px;
-      font-size: 0.8em;
-      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.75em;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .entry-type-brain-dump {
-      background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-      color: #0f4c3a;
+      background: #e8e3d9;
+      color: #5a5548;
     }
 
     .entry-type-inspiration {
-      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-      color: #7c2d5e;
+      background: #d9d4ca;
+      color: #4a453d;
     }
 
     .entry-type-highlights {
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-      color: #8b3a1e;
+      background: #f0ebe3;
+      color: #6b6559;
     }
 
     .entry-date {
-      color: #9ca3af;
+      color: #888;
       font-size: 0.85em;
-      font-weight: 500;
+      font-weight: 400;
     }
 
     .entry-preview {
-      color: #374151;
+      color: #4a4a4a;
       line-height: 1.7;
       white-space: pre-wrap;
       font-size: 0.95em;
@@ -355,9 +342,9 @@
     .no-entries {
       text-align: center;
       padding: 80px 20px;
-      color: #9ca3af;
-      font-size: 1.1em;
-      font-weight: 500;
+      color: #888;
+      font-size: 1em;
+      font-weight: 400;
     }
   </style>
 </head>
