@@ -371,9 +371,11 @@ function App() {
           </div>
           {/* Actions */}
           <div style={{ display:"flex", gap:20, alignItems:"center" }}>
-            <button className="btn-icon" onClick={saveDraft}
-              style={{ background:"none", border:"none", cursor:"pointer", padding:0,
-                       display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+            <button className="btn-icon" onClick={canPublish ? saveDraft : undefined}
+              style={{ background:"none", border:"none", padding:0,
+                       display:"flex", flexDirection:"column", alignItems:"center", gap:4,
+                       opacity: canPublish ? 1 : 0.25,
+                       cursor: canPublish ? "pointer" : "default" }}>
               <Icon name="floppy" size={30} color={T.muted}/>
               <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
