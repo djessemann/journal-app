@@ -333,31 +333,34 @@ function App() {
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
                       padding:`14px 24px calc(18px + ${safeBottom})`, borderTop:`1px solid ${T.border}` }}>
           {/* Type tags */}
-          <div style={{ display:"flex", gap:16, alignItems:"center" }}>
+          <div style={{ display:"flex", gap:20, alignItems:"center" }}>
             {TYPES.map(t => {
               const active = entryType === t;
               return (
                 <button key={t} className="btn-icon" onClick={() => setEntryType(t)}
-                  style={{ background:"none", border:"none", cursor:"pointer", padding:4,
-                           display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  <Icon name={TYPE_ICON[t]} size={22} color={active ? T.text : T.muted2}/>
+                  style={{ background:"none", border:"none", cursor:"pointer", padding:0,
+                           display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+                  <Icon name={TYPE_ICON[t]} size={17} color={active ? T.text : T.muted}/>
+                  <div style={{ width:16, height:1.5, background: active ? T.text : "transparent" }}/>
                 </button>
               );
             })}
           </div>
           {/* Actions */}
-          <div style={{ display:"flex", gap:16, alignItems:"center" }}>
+          <div style={{ display:"flex", gap:20, alignItems:"center" }}>
             <button className="btn-icon" onClick={saveDraft}
-              style={{ background:"none", border:"none", cursor:"pointer", padding:4,
-                       display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <Icon name="floppy" size={22} color={T.muted}/>
+              style={{ background:"none", border:"none", cursor:"pointer", padding:0,
+                       display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+              <Icon name="floppy" size={17} color={T.muted}/>
+              <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
             <button className="btn-icon" onClick={canPublish ? publish : undefined}
-              style={{ background:"none", border:"none", padding:4,
-                       display:"flex", alignItems:"center", justifyContent:"center",
+              style={{ background:"none", border:"none", padding:0,
+                       display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                        opacity: canPublish ? 1 : 0.25,
                        cursor: canPublish ? "pointer" : "default" }}>
-              <Icon name="plane" size={22} color={T.text}/>
+              <Icon name="plane" size={17} color={canPublish ? T.text : T.muted}/>
+              <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
           </div>
         </div>
