@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="92" fill="#F8F7F4"/>
+  <g transform="rotate(-8 256 256)" fill="none" stroke="#111110" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Spine -->
+    <rect x="95" y="53" width="71" height="405" rx="9" stroke-width="21"/>
+    <!-- Cover -->
+    <rect x="167" y="53" width="244" height="405" rx="9" stroke-width="21"/>
+    <!-- Squiggle doodle -->
+    <path d="M202 274 C214 274 220 226 238 226 C256 226 262 321 280 321 C298 321 304 238 322 238 C340 238 346 298 364 298 C376 298 382 274 394 274" stroke-width="13"/>
+  </g>
+</svg>
