@@ -226,7 +226,9 @@ function App() {
   const [editingDraftId, setEditingDraftId] = useState(null);
   const [archiveTab, setArchiveTab] = useState("Published");
   const [filter,     setFilter]    = useState("All");
-  const [confirmId,  setConfirmId] = useState(null);
+  const [confirmId,  setConfirmId]  = useState(null);
+  const [confirmType, setConfirmType] = useState(null); // "published" | "draft"
+  const [toast,      setToast]      = useState(null);
   const taRef = useRef(null);
   const T = theme(dark);
 
@@ -239,28 +241,38 @@ function App() {
     setText(""); setEntryType("Brain Dump"); setEditingId(null); setEditingDraftId(null);
   }, []);
 
+  const showToast = useCallback((msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 1600);
+  }, []);
+
   const publish = useCallback(() => {
     if (!text.trim()) return;
     const ts = nowStamp();
     if (editingId) {
       const orig = published.find(e => e.id === editingId);
       setPublished(p => p.map(e => e.id === editingId ? { ...e, text, type:entryType, date:orig.date, time:orig.time } : e));
+      showToast("entry updated");
     } else {
       setPublished(p => [{ id:Date.now(), text, type:entryType, ...ts }, ...p]);
+      showToast("published");
     }
     if (editingDraftId) setDrafts(d => d.filter(x => x.id !== editingDraftId));
-    reset(); setArchiveTab("Published"); setScreen(SCREENS.ARCHIVE);
-  }, [text, entryType, editingId, editingDraftId, published, reset]);
+    reset();
+  }, [text, entryType, editingId, editingDraftId, published, reset, showToast]);
 
   const saveDraft = useCallback(() => {
+    if (!text.trim()) return;
     const ts = nowStamp();
     if (editingDraftId) {
       setDrafts(d => d.map(x => x.id === editingDraftId ? { ...x, text, type:entryType, ...ts } : x));
+      showToast("draft updated");
     } else {
       setDrafts(d => [{ id:Date.now(), text, type:entryType, ...ts }, ...d]);
+      showToast("draft saved");
     }
-    reset(); setArchiveTab("Drafts"); setScreen(SCREENS.ARCHIVE);
-  }, [text, entryType, editingDraftId, reset]);
+    reset();
+  }, [text, entryType, editingDraftId, reset, showToast]);
 
   const openDraft = useCallback((d) => {
     setText(d.text); setEntryType(d.type); setEditingDraftId(d.id); setEditingId(null); setScreen(SCREENS.WRITE);
@@ -271,12 +283,17 @@ function App() {
   }, []);
 
   const startNew  = useCallback(() => { reset(); setScreen(SCREENS.WRITE); }, [reset]);
-  const goArchive = useCallback(() => { reset(); setScreen(SCREENS.ARCHIVE); }, [reset]);
-  const goSettings= useCallback(() => { reset(); setScreen(SCREENS.SETTINGS); }, [reset]);
+  const goArchive = useCallback(() => { setScreen(SCREENS.ARCHIVE); }, []);
+  const goSettings= useCallback(() => { setScreen(SCREENS.SETTINGS); }, []);
 
-  const deletePublished = useCallback(() => {
-    setPublished(p => p.filter(e => e.id !== confirmId)); setConfirmId(null);
-  }, [confirmId]);
+  const confirmDelete = useCallback((id, type) => {
+    setConfirmId(id); setConfirmType(type);
+  }, []);
+  const executeDelete = useCallback(() => {
+    if (confirmType === "published") setPublished(p => p.filter(e => e.id !== confirmId));
+    else setDrafts(d => d.filter(x => x.id !== confirmId));
+    setConfirmId(null); setConfirmType(null);
+  }, [confirmId, confirmType]);
 
   const exportXLSX = useCallback(() => {
     if (!published.length) return;
@@ -297,7 +314,6 @@ function App() {
 
   const canPublish = text.trim().length > 0;
   const filtered   = filter === "All" ? published : published.filter(e => e.type === filter);
-  const confirmEntry = published.find(e => e.id === confirmId);
 
   const safeTop    = "env(safe-area-inset-top, 0px)";
   const safeBottom = "env(safe-area-inset-bottom, 0px)";
@@ -399,23 +415,23 @@ function App() {
         })}
       </div>
 
-      {/* Filter — text chips, no background */}
+      {/* Filter — icon chips */}
       {archiveTab === "Published" && (
-        <div className="filter-row scroll-list"
-          style={{ display:"flex", gap:16, padding:"12px 24px", overflowX:"auto", flexShrink:0, flexDirection:"row" }}>
-          {["All",...TYPES].map(f => {
-            const active = filter === f;
+        <div style={{ display:"flex", gap:20, padding:"12px 24px", flexShrink:0, alignItems:"center" }}>
+          <button className="btn-icon" onClick={() => setFilter("All")}
+            style={{ background:"none", border:"none", cursor:"pointer", padding:0,
+                     display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+            <span style={{ fontSize:11, color: filter === "All" ? T.text : T.muted, letterSpacing:"0.04em" }}>all</span>
+            <div style={{ width:16, height:1.5, background: filter === "All" ? T.text : "transparent" }}/>
+          </button>
+          {TYPES.map(t => {
+            const active = filter === t;
             return (
-              <button key={f} className="btn-text" onClick={() => setFilter(f)}
-                style={{
-                  ...textBtn(active, { size:13 }),
-                  whiteSpace:"nowrap", flexShrink:0,
-                  borderBottom:`1px solid ${active ? T.text : "transparent"}`,
-                  paddingBottom:2,
-                  textTransform:"lowercase",
-                  letterSpacing:"0.04em",
-                }}>
-                {f.toLowerCase()}
+              <button key={t} className="btn-icon" onClick={() => setFilter(t)}
+                style={{ background:"none", border:"none", cursor:"pointer", padding:0,
+                         display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+                <Icon name={TYPE_ICON[t]} size={19} color={active ? T.text : T.muted}/>
+                <div style={{ width:16, height:1.5, background: active ? T.text : "transparent" }}/>
               </button>
             );
           })}
@@ -428,12 +444,12 @@ function App() {
         {archiveTab === "Published" && (
           filtered.length === 0
             ? <Empty msg="nothing published yet"/>
-            : filtered.map(e => <Row key={e.id} entry={e} isDraft={false} onTap={() => openPublished(e)} onDelete={() => setConfirmId(e.id)}/>)
+            : filtered.map(e => <Row key={e.id} entry={e} isDraft={false} onTap={() => openPublished(e)} onDelete={() => confirmDelete(e.id, "published")}/>)
         )}
         {archiveTab === "Drafts" && (
           drafts.length === 0
             ? <Empty msg="no drafts"/>
-            : drafts.map(d => <Row key={d.id} entry={d} isDraft={true} onTap={() => openDraft(d)} onDelete={() => setDrafts(p => p.filter(x => x.id !== d.id))}/>)
+            : drafts.map(d => <Row key={d.id} entry={d} isDraft={true} onTap={() => openDraft(d)} onDelete={() => confirmDelete(d.id, "draft")}/>)
         )}
         <div style={{ height:`calc(16px + ${safeBottom})` }}/>
       </div>
@@ -448,10 +464,8 @@ function App() {
         style={{ display:"flex", alignItems:"flex-start", borderBottom:`1px solid ${T.hairline}` }}>
         <div className="tap-target" onClick={onTap}
           style={{ flex:1, padding:"18px 0", cursor:"pointer", transition:"opacity 0.1s", minWidth:0 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
-            <span style={{ fontSize:11, color:T.muted, letterSpacing:"0.08em", textTransform:"uppercase" }}>
-              {entry.type}
-            </span>
+          <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:6 }}>
+            <Icon name={TYPE_ICON[entry.type]} size={14} color={T.muted}/>
             <span style={{ fontSize:11, color:T.muted, letterSpacing:"0.04em" }}>
               {entry.date} · {entry.time}
             </span>
@@ -583,31 +597,28 @@ function App() {
 
   /* ── Delete sheet ───────────────────────────────────────────────────── */
   const deleteSheet = (
-    <div className="overlay" onClick={() => setConfirmId(null)}
+    <div className="overlay" onClick={() => { setConfirmId(null); setConfirmType(null); }}
       style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.3)", zIndex:50,
                display:"flex", alignItems:"flex-end" }}>
       <div className="sheet" onClick={e => e.stopPropagation()}
         style={{ width:"100%", background:T.bg,
                  borderTop:`1px solid ${T.border}`,
                  paddingBottom:`calc(28px + ${safeBottom})` }}>
-        <div style={{ display:"flex", justifyContent:"center", padding:"14px 0 20px" }}>
+        <div style={{ display:"flex", justifyContent:"center", padding:"14px 0 16px" }}>
           <div style={{ width:32, height:3, borderRadius:2, background:T.muted2 }}/>
         </div>
-        {confirmEntry && (
-          <p style={{ fontSize:14, color:T.muted, lineHeight:1.6, margin:"0 0 20px",
-                      padding:"0 32px", textAlign:"center", fontWeight:400 }}>
-            "{confirmEntry.text.slice(0,80)}{confirmEntry.text.length > 80 ? "…" : ""}"
-          </p>
-        )}
+        <p style={{ fontSize:14, color:T.muted, padding:"0 32px 16px", textAlign:"center" }}>
+          delete this {confirmType === "draft" ? "draft" : "entry"}?
+        </p>
         <div style={{ height:1, background:T.border }}/>
-        <button className="btn-text" onClick={deletePublished}
+        <button className="btn-text" onClick={executeDelete}
           style={{ width:"100%", padding:"16px 0", background:"none", border:"none",
                    color:T.danger, fontSize:15, fontWeight:500, cursor:"pointer",
                    fontFamily:"inherit", letterSpacing:"0.03em" }}>
-          delete entry
+          delete
         </button>
         <div style={{ height:1, background:T.border }}/>
-        <button className="btn-text" onClick={() => setConfirmId(null)}
+        <button className="btn-text" onClick={() => { setConfirmId(null); setConfirmType(null); }}
           style={{ width:"100%", padding:"16px 0", background:"none", border:"none",
                    color:T.muted, fontSize:15, fontWeight:400, cursor:"pointer",
                    fontFamily:"inherit", letterSpacing:"0.03em" }}>
@@ -624,6 +635,14 @@ function App() {
       {screen === SCREENS.ARCHIVE  && archiveScreen}
       {screen === SCREENS.SETTINGS && settingsScreen}
       {confirmId                   && deleteSheet}
+      {toast && (
+        <div style={{ position:"fixed", bottom:100, left:"50%", transform:"translateX(-50%)",
+                      background:T.text, color:T.bg, fontSize:13, padding:"8px 20px",
+                      borderRadius:20, letterSpacing:"0.04em", zIndex:60,
+                      animation:"fadeIn 0.16s ease forwards", pointerEvents:"none" }}>
+          {toast}
+        </div>
+      )}
     </div>
   );
 }
