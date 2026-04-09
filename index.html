@@ -317,11 +317,10 @@ function App() {
   /* ── Write ─────────────────────────────────────────────────────────── */
   const isEditDraft = editingDraftId !== null;
   const isEditPub   = editingId !== null;
-  const writeLabel = isEditDraft ? "draft" : isEditPub ? "entry" : "new";
 
   const writeScreen = (
       <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
-        <TopNav label={writeLabel} active="write"/>
+        <TopNav active="write"/>
 
         {/* Textarea */}
         <div style={{ flex:1, padding:"16px 24px 0", overflow:"hidden" }}>
@@ -377,7 +376,7 @@ function App() {
   /* ── Archive ────────────────────────────────────────────────────────── */
   const archiveScreen = (
     <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
-      <TopNav label="archive" active="archive"/>
+      <TopNav active="archive"/>
 
       {/* Tabs */}
       <div style={{ display:"flex", padding:"14px 24px 0", gap:20, borderBottom:`1px solid ${T.border}` }}>
@@ -482,7 +481,7 @@ function App() {
   /* ── Settings ───────────────────────────────────────────────────────── */
   const settingsScreen = (
     <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
-      <TopNav label="settings" active="settings"/>
+      <TopNav active="settings"/>
       <div className="scroll-list" style={{ flex:1, padding:"0 24px" }}>
 
         <SRow label="appearance">
@@ -548,7 +547,7 @@ function App() {
   }
 
   /* ── Top Nav (shared) ───────────────────────────────────────────────── */
-  function TopNav({ label, active }) {
+  function TopNav({ active }) {
     // active: "write" | "archive" | "settings"
     const items = [
       { id:"write",    icon:"write",    fn: startNew },
@@ -556,11 +555,8 @@ function App() {
       { id:"settings", icon:"settings", fn: goSettings },
     ];
     return (
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
+      <div style={{ display:"flex", justifyContent:"flex-end", alignItems:"center",
                     padding:"14px 24px 0", flexShrink:0 }}>
-        <span style={{ fontSize:15, color:T.muted, letterSpacing:"0.08em", textTransform:"uppercase" }}>
-          {label}
-        </span>
         <div style={{ display:"flex", gap:20, alignItems:"center" }}>
           {items.map(({ id, icon, fn }) => {
             const isActive = active === id;
