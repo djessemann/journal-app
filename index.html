@@ -10,6 +10,8 @@
   <meta name="apple-mobile-web-app-title" content="Journal"/>
   <meta name="theme-color" content="#F8F7F4"/>
   <title>Journal</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" type="image/svg+xml" href="icon.svg"/>
   <!-- PWA icon injected via script below -->
   <link id="apple-touch-icon" rel="apple-touch-icon"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -617,6 +619,12 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
 </script>
 
 </body>
