@@ -46,6 +46,14 @@ textarea { -webkit-user-select: text; user-select: text; }
   #root { width: 393px; height: 852px; border-radius: 47px; overflow: hidden; flex-shrink: 0;
           box-shadow: 0 32px 100px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.08); }
 }
+
+@media (min-width: 768px) {
+  #root { width: 480px; height: 920px; }
+}
+
+@media (min-width: 1024px) {
+  #root { width: 520px; height: 960px; }
+}
 ```
 
   </style>
@@ -340,7 +348,7 @@ function App() {
                 <button key={t} className="btn-icon" onClick={() => setEntryType(t)}
                   style={{ background:"none", border:"none", cursor:"pointer", padding:0,
                            display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-                  <Icon name={TYPE_ICON[t]} size={17} color={active ? T.text : T.muted}/>
+                  <Icon name={TYPE_ICON[t]} size={27} color={active ? T.text : T.muted}/>
                   <div style={{ width:16, height:1.5, background: active ? T.text : "transparent" }}/>
                 </button>
               );
@@ -351,7 +359,7 @@ function App() {
             <button className="btn-icon" onClick={saveDraft}
               style={{ background:"none", border:"none", cursor:"pointer", padding:0,
                        display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-              <Icon name="floppy" size={17} color={T.muted}/>
+              <Icon name="floppy" size={27} color={T.muted}/>
               <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
             <button className="btn-icon" onClick={canPublish ? publish : undefined}
@@ -359,7 +367,7 @@ function App() {
                        display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                        opacity: canPublish ? 1 : 0.25,
                        cursor: canPublish ? "pointer" : "default" }}>
-              <Icon name="plane" size={17} color={canPublish ? T.text : T.muted}/>
+              <Icon name="plane" size={27} color={canPublish ? T.text : T.muted}/>
               <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
           </div>
