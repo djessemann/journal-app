@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="92" fill="#F8F7F4"/>
-  <g transform="rotate(-8 256 256)" fill="none" stroke="#111110" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(256 256) scale(0.85) rotate(-8) translate(-256 -256)" fill="none" stroke="#111110" stroke-linecap="round" stroke-linejoin="round">
     <!-- Spine -->
     <rect x="95" y="53" width="71" height="405" rx="9" stroke-width="21"/>
     <!-- Cover -->
