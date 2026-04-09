@@ -315,14 +315,13 @@ function App() {
   });
 
   /* ── Write ─────────────────────────────────────────────────────────── */
-  const WriteScreen = () => {
-    const isEditDraft = editingDraftId !== null;
-    const isEditPub   = editingId !== null;
-    const label = isEditDraft ? "draft" : isEditPub ? "entry" : "new";
+  const isEditDraft = editingDraftId !== null;
+  const isEditPub   = editingId !== null;
+  const writeLabel = isEditDraft ? "draft" : isEditPub ? "entry" : "new";
 
-    return (
+  const writeScreen = (
       <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
-        <TopNav label={label} active="write"/>
+        <TopNav label={writeLabel} active="write"/>
 
         {/* Textarea */}
         <div style={{ flex:1, padding:"16px 24px 0", overflow:"hidden" }}>
@@ -373,11 +372,10 @@ function App() {
           </div>
         </div>
       </div>
-    );
-  };
+  );
 
   /* ── Archive ────────────────────────────────────────────────────────── */
-  const ArchiveScreen = () => (
+  const archiveScreen = (
     <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
       <TopNav label="archive" active="archive"/>
 
@@ -482,7 +480,7 @@ function App() {
   }
 
   /* ── Settings ───────────────────────────────────────────────────────── */
-  const SettingsScreen = () => (
+  const settingsScreen = (
     <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", paddingTop:safeTop, background:T.bg }}>
       <TopNav label="settings" active="settings"/>
       <div className="scroll-list" style={{ flex:1, padding:"0 24px" }}>
@@ -587,7 +585,7 @@ function App() {
   }
 
   /* ── Delete sheet ───────────────────────────────────────────────────── */
-  const DeleteSheet = () => (
+  const deleteSheet = (
     <div className="overlay" onClick={() => setConfirmId(null)}
       style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.3)", zIndex:50,
                display:"flex", alignItems:"flex-end" }}>
@@ -625,10 +623,10 @@ function App() {
   return (
     <div style={{ width:"100%", height:"100%", background:T.bg, color:T.text,
                   display:"flex", flexDirection:"column", overflow:"hidden" }}>
-      {screen === SCREENS.WRITE    && <WriteScreen/>}
-      {screen === SCREENS.ARCHIVE  && <ArchiveScreen/>}
-      {screen === SCREENS.SETTINGS && <SettingsScreen/>}
-      {confirmId                   && <DeleteSheet/>}
+      {screen === SCREENS.WRITE    && writeScreen}
+      {screen === SCREENS.ARCHIVE  && archiveScreen}
+      {screen === SCREENS.SETTINGS && settingsScreen}
+      {confirmId                   && deleteSheet}
     </div>
   );
 }
