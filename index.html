@@ -174,7 +174,7 @@ function nowStamp() {
 
 // ── Icon set — nav (24×24) + action icons (38×38)
 const ACTION_ICONS = ["brain","bulb","heart","floppy","plane"];
-function Icon({ name, size=20, color="currentColor" }) {
+function Icon({ name, size=24, color="currentColor" }) {
   const p = {
     write:    <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></>,
     archive:  <><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></>,
@@ -374,7 +374,7 @@ function App() {
     background:"none", border:"none", cursor:"pointer", fontFamily:"inherit",
     color: active ? T.text : T.muted,
     fontWeight: active ? 500 : 400,
-    fontSize: opts.size || 13,
+    fontSize: opts.size || 16,
     padding: opts.padding || "6px 0",
     textDecoration: active && opts.underline ? "underline" : "none",
     textUnderlineOffset: "3px",
@@ -397,7 +397,7 @@ function App() {
             style={{
               width:"100%", height:"100%", background:"transparent",
               border:"none", outline:"none", resize:"none",
-              fontSize:17, lineHeight:1.8, color:T.text,
+              fontSize:20, lineHeight:1.8, color:T.text,
               fontFamily:"'DM Mono','Courier New',monospace", fontWeight:400,
               caretColor: T.text,
             }}/>
@@ -414,7 +414,7 @@ function App() {
                 <button key={t} className="btn-icon" onClick={() => setEntryType(t)}
                   style={{ background:"none", border:"none", cursor:"pointer", padding:0,
                            display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-                  <Icon name={TYPE_ICON[t]} size={30} color={active ? T.text : T.muted}/>
+                  <Icon name={TYPE_ICON[t]} size={36} color={active ? T.text : T.muted}/>
                   <div style={{ width:16, height:1.5, background: active ? T.text : "transparent" }}/>
                 </button>
               );
@@ -427,7 +427,7 @@ function App() {
                        display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                        opacity: canPublish ? 1 : 0.25,
                        cursor: canPublish ? "pointer" : "default" }}>
-              <Icon name="floppy" size={30} color={T.muted}/>
+              <Icon name="floppy" size={36} color={T.muted}/>
               <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
             <button className="btn-icon" onClick={canPublish ? publish : undefined}
@@ -435,7 +435,7 @@ function App() {
                        display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                        opacity: canPublish ? 1 : 0.25,
                        cursor: canPublish ? "pointer" : "default" }}>
-              <Icon name="plane" size={30} color={canPublish ? T.text : T.muted}/>
+              <Icon name="plane" size={36} color={canPublish ? T.text : T.muted}/>
               <div style={{ width:16, height:1.5, background:"transparent" }}/>
             </button>
           </div>
@@ -456,13 +456,13 @@ function App() {
           return (
             <button key={tab} className="btn-text" onClick={() => setArchiveTab(tab)}
               style={{
-                ...textBtn(active, { size:14, underline:false }),
+                ...textBtn(active, { size:17, underline:false }),
                 paddingBottom:10, marginBottom:-1,
                 borderBottom:`1.5px solid ${active ? T.text : "transparent"}`,
                 display:"flex", alignItems:"center", gap:6,
               }}>
               {tab.toLowerCase()}
-              {count && <span style={{ fontSize:12, color:T.muted }}>({count})</span>}
+              {count && <span style={{ fontSize:14, color:T.muted }}>({count})</span>}
             </button>
           );
         })}
@@ -474,7 +474,7 @@ function App() {
           <button className="btn-icon" onClick={() => setFilter("All")}
             style={{ background:"none", border:"none", cursor:"pointer", padding:0,
                      display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-            <span style={{ fontSize:13, fontWeight: filter === "All" ? 500 : 400, color: filter === "All" ? T.text : T.muted, letterSpacing:"0.04em" }}>all</span>
+            <span style={{ fontSize:16, fontWeight: filter === "All" ? 500 : 400, color: filter === "All" ? T.text : T.muted, letterSpacing:"0.04em" }}>all</span>
             <div style={{ width:18, height:1.5, background: filter === "All" ? T.text : "transparent" }}/>
           </button>
           {TYPES.map(t => {
@@ -483,7 +483,7 @@ function App() {
               <button key={t} className="btn-icon" onClick={() => setFilter(t)}
                 style={{ background:"none", border:"none", cursor:"pointer", padding:0,
                          display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-                <Icon name={TYPE_ICON[t]} size={26} color={active ? T.text : T.muted}/>
+                <Icon name={TYPE_ICON[t]} size={31} color={active ? T.text : T.muted}/>
                 <div style={{ width:18, height:1.5, background: active ? T.text : "transparent" }}/>
               </button>
             );
@@ -518,13 +518,13 @@ function App() {
         <div className="tap-target" onClick={onTap}
           style={{ flex:1, padding:"18px 0", cursor:"pointer", transition:"opacity 0.1s", minWidth:0 }}>
           <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:6 }}>
-            <Icon name={TYPE_ICON[entry.type]} size={20} color={T.muted}/>
-            <span style={{ fontSize:11, color:T.muted, letterSpacing:"0.04em" }}>
+            <Icon name={TYPE_ICON[entry.type]} size={24} color={T.muted}/>
+            <span style={{ fontSize:13, color:T.muted, letterSpacing:"0.04em" }}>
               {entry.date} · {entry.time}
             </span>
           </div>
           <div style={{
-            fontSize:15, lineHeight:1.5, fontWeight:400,
+            fontSize:18, lineHeight:1.5, fontWeight:400,
             color: isEmpty ? T.muted : T.text,
             fontStyle: isEmpty ? "italic" : "normal",
             whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis",
@@ -536,14 +536,14 @@ function App() {
           style={{ width:44, height:44, background:"none", border:"none", cursor:"pointer",
                    display:"flex", alignItems:"center", justifyContent:"center",
                    flexShrink:0, alignSelf:"center" }}>
-          <Icon name="x" size={16} color={T.muted2}/>
+          <Icon name="x" size={19} color={T.muted2}/>
         </button>
       </div>
     );
   }
 
   function Empty({ msg }) {
-    return <div style={{ textAlign:"center", padding:"64px 0", color:T.muted, fontSize:14 }}>{msg}</div>;
+    return <div style={{ textAlign:"center", padding:"64px 0", color:T.muted, fontSize:17 }}>{msg}</div>;
   }
 
   /* ── Settings ───────────────────────────────────────────────────────── */
@@ -558,7 +558,7 @@ function App() {
               const active = (opt === "dark") === dark;
               return (
                 <button key={opt} className="btn-text" onClick={() => setDark(opt === "dark")}
-                  style={{ ...textBtn(active, { size:14, underline:true }) }}>
+                  style={{ ...textBtn(active, { size:17, underline:true }) }}>
                   {opt}
                 </button>
               );
@@ -572,7 +572,7 @@ function App() {
               const active = startOn.toLowerCase() === opt;
               return (
                 <button key={opt} className="btn-text" onClick={() => setStartOn(opt.charAt(0).toUpperCase()+opt.slice(1))}
-                  style={{ ...textBtn(active, { size:14, underline:true }) }}>
+                  style={{ ...textBtn(active, { size:17, underline:true }) }}>
                   {opt}
                 </button>
               );
@@ -583,12 +583,12 @@ function App() {
         <SRow label="export">
           <button className="btn-text" onClick={exportXLSX}
             style={{
-              ...textBtn(published.length > 0, { size:14 }),
+              ...textBtn(published.length > 0, { size:17 }),
               display:"flex", alignItems:"center", gap:6,
               opacity: published.length > 0 ? 1 : 0.3,
               cursor: published.length > 0 ? "pointer" : "default",
             }}>
-            <Icon name="export" size={14} color={published.length > 0 ? T.text : T.muted}/>
+            <Icon name="export" size={17} color={published.length > 0 ? T.text : T.muted}/>
             download
           </button>
         </SRow>
@@ -596,17 +596,17 @@ function App() {
         <SRow label="import">
           <label className="btn-text"
             style={{
-              ...textBtn(true, { size:14 }),
+              ...textBtn(true, { size:17 }),
               display:"flex", alignItems:"center", gap:6, cursor:"pointer",
             }}>
-            <Icon name="upload" size={14} color={T.text}/>
+            <Icon name="upload" size={17} color={T.text}/>
             upload
             <input type="file" accept=".xlsx,.xls" onChange={importXLSX}
               style={{ display:"none" }}/>
           </label>
         </SRow>
 
-        <div style={{ padding:"40px 0 0", color:T.muted, fontSize:9, letterSpacing:"0.06em" }}>
+        <div style={{ padding:"40px 0 0", color:T.muted, fontSize:11, letterSpacing:"0.06em" }}>
           journal · v0.1
         </div>
         <div style={{ height:`calc(16px + ${safeBottom})` }}/>
@@ -619,8 +619,8 @@ function App() {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
                     padding:"18px 0", borderBottom:`1px solid ${T.border}` }}>
         <div>
-          <div style={{ fontSize:14, color:T.text, letterSpacing:"0.02em" }}>{label}</div>
-          {note && <div style={{ fontSize:13, color:T.muted, marginTop:3, letterSpacing:"0.03em" }}>{note}</div>}
+          <div style={{ fontSize:17, color:T.text, letterSpacing:"0.02em" }}>{label}</div>
+          {note && <div style={{ fontSize:16, color:T.muted, marginTop:3, letterSpacing:"0.03em" }}>{note}</div>}
         </div>
         {children}
       </div>
@@ -648,7 +648,7 @@ function App() {
                   display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                   padding:0,
                 }}>
-                <Icon name={icon} size={19} color={isActive ? T.text : T.muted}/>
+                <Icon name={icon} size={23} color={isActive ? T.text : T.muted}/>
                 <div style={{
                   width:16, height:1.5,
                   background: isActive ? T.text : "transparent",
@@ -673,20 +673,20 @@ function App() {
         <div style={{ display:"flex", justifyContent:"center", padding:"14px 0 16px" }}>
           <div style={{ width:32, height:3, borderRadius:2, background:T.muted2 }}/>
         </div>
-        <p style={{ fontSize:14, color:T.muted, padding:"0 32px 16px", textAlign:"center" }}>
+        <p style={{ fontSize:17, color:T.muted, padding:"0 32px 16px", textAlign:"center" }}>
           delete this {confirmType === "draft" ? "draft" : "entry"}?
         </p>
         <div style={{ height:1, background:T.border }}/>
         <button className="btn-text" onClick={executeDelete}
           style={{ width:"100%", padding:"16px 0", background:"none", border:"none",
-                   color:T.danger, fontSize:15, fontWeight:500, cursor:"pointer",
+                   color:T.danger, fontSize:18, fontWeight:500, cursor:"pointer",
                    fontFamily:"inherit", letterSpacing:"0.03em" }}>
           delete
         </button>
         <div style={{ height:1, background:T.border }}/>
         <button className="btn-text" onClick={() => { setConfirmId(null); setConfirmType(null); }}
           style={{ width:"100%", padding:"16px 0", background:"none", border:"none",
-                   color:T.muted, fontSize:15, fontWeight:400, cursor:"pointer",
+                   color:T.muted, fontSize:18, fontWeight:400, cursor:"pointer",
                    fontFamily:"inherit", letterSpacing:"0.03em" }}>
           cancel
         </button>
@@ -703,7 +703,7 @@ function App() {
       {confirmId                   && deleteSheet}
       {toast && (
         <div style={{ position:"fixed", bottom:100, left:"50%", transform:"translateX(-50%)",
-                      background:T.text, color:T.bg, fontSize:13, padding:"8px 20px",
+                      background:T.text, color:T.bg, fontSize:16, padding:"8px 20px",
                       borderRadius:20, letterSpacing:"0.04em", zIndex:60,
                       animation:"fadeIn 0.16s ease forwards", pointerEvents:"none" }}>
           {toast}
