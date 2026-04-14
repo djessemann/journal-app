@@ -19,10 +19,11 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-    html, body, #root { height: 100%; width: 100%; overflow: hidden; background: #F8F7F4; }
-    body { font-family: 'DM Mono', 'Courier New', monospace; -webkit-font-smoothing: antialiased; }
-    .scroll-list { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    html, body, #root { height: 100%; width: 100%; overflow: hidden; background: #F8F7F4; overscroll-behavior: none; }
+    body { position: fixed; inset: 0; font-family: 'DM Mono', 'Courier New', monospace; -webkit-font-smoothing: antialiased; touch-action: none; }
+    .scroll-list { overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior: contain; }
     .scroll-list::-webkit-scrollbar { display: none; }
+    textarea { touch-action: pan-y; overscroll-behavior: contain; }
 
 ```
 .tap-row:active .tap-target { opacity: 0.4; }
