@@ -70,6 +70,16 @@ textarea { -webkit-user-select: text; user-select: text; }
       if (now - lastTouchEnd <= 350) e.preventDefault();
       lastTouchEnd = now;
     }, { passive: false });
+    // Block trackpad pinch-zoom and Ctrl/Cmd + scroll-wheel zoom on desktop
+    document.addEventListener('wheel', e => {
+      if (e.ctrlKey || e.metaKey) e.preventDefault();
+    }, { passive: false });
+    // Block Ctrl/Cmd + (+/-/0) keyboard zoom shortcuts
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && ['=', '+', '-', '_', '0'].includes(e.key)) {
+        e.preventDefault();
+      }
+    });
   </script>
   <script>
     // Generate PWA home screen icon as inline PNG via canvas
