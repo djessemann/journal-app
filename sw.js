@@ -1,4 +1,4 @@
-const CACHE_NAME = 'journal-v3';
+const CACHE_NAME = 'journal-v4';
 const PRECACHE = [
   '/journal-app/',
   '/journal-app/index.html',
