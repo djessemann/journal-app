@@ -1,57 +1,35 @@
-const CACHE_NAME = 'journal-v4';
-const PRECACHE = [
-  '/journal-app/',
-  '/journal-app/index.html',
-  '/journal-app/manifest.json',
-  '/journal-app/icon.svg',
-];
-const CDN_ASSETS = [
-  'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
-];
+// KILL SWITCH — this service worker unregisters itself and clears all
+// caches on activation, then reloads every open client. After it runs
+// once, there is no service worker and every load comes fresh from the
+// network. index.html no longer registers an SW, so nothing re-installs.
+//
+// NOTE: localStorage is untouched. Journal entries are safe.
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      cache.addAll([...PRECACHE, ...CDN_ASSETS])
-    ).then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
+  e.waitUntil((async () => {
+    // Wipe every cache this origin owns
+    const keys = await caches.keys();
+    await Promise.all(keys.map((k) => caches.delete(k)));
+
+    // Take control of any open pages
+    await self.clients.claim();
+
+    // Unregister self
+    await self.registration.unregister();
+
+    // Force a hard reload of every open client so they pick up fresh HTML
+    const clients = await self.clients.matchAll({ type: 'window' });
+    clients.forEach((client) => {
+      try { client.navigate(client.url); } catch (_) {}
+    });
+  })());
 });
 
+// Passthrough fetch — never intercept, never cache
 self.addEventListener('fetch', (e) => {
-  const url = new URL(e.request.url);
-  const isHtmlOrSw = e.request.mode === 'navigate'
-    || url.pathname.endsWith('/index.html')
-    || url.pathname.endsWith('/sw.js');
-
-  e.respondWith(
-    caches.match(e.request).then((cached) => {
-      // Network-first (no cache fallback write) for HTML + SW so code updates land immediately
-      if (isHtmlOrSw) {
-        return fetch(e.request, { cache: 'no-store' })
-          .then((resp) => {
-            const clone = resp.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-            return resp;
-          })
-          .catch(() => cached || caches.match('/journal-app/index.html'));
-      }
-      return cached || fetch(e.request).then((resp) => {
-        const clone = resp.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-        return resp;
-      });
-    })
-  );
+  // Let the browser handle everything normally
 });
