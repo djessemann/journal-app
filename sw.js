@@ -1,4 +1,4 @@
-const CACHE_NAME = 'journal-v2';
+const CACHE_NAME = 'journal-v3';
 const PRECACHE = [
   '/journal-app/',
   '/journal-app/index.html',
@@ -30,15 +30,22 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+  const isHtmlOrSw = e.request.mode === 'navigate'
+    || url.pathname.endsWith('/index.html')
+    || url.pathname.endsWith('/sw.js');
+
   e.respondWith(
     caches.match(e.request).then((cached) => {
-      // Network-first for navigation, cache-first for assets
-      if (e.request.mode === 'navigate') {
-        return fetch(e.request).then((resp) => {
-          const clone = resp.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-          return resp;
-        }).catch(() => cached || caches.match('/journal-app/index.html'));
+      // Network-first (no cache fallback write) for HTML + SW so code updates land immediately
+      if (isHtmlOrSw) {
+        return fetch(e.request, { cache: 'no-store' })
+          .then((resp) => {
+            const clone = resp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+            return resp;
+          })
+          .catch(() => cached || caches.match('/journal-app/index.html'));
       }
       return cached || fetch(e.request).then((resp) => {
         const clone = resp.clone();
