@@ -147,16 +147,9 @@ const LS_KEY  = "dsj_v3";
 const TYPE_DOT = { "Brain Dump":"#999", Inspiration:"#999", Highlight:"#999" };
 
 const SEED_PUB = [
-  { id:1, text:"Need to think through the blend naming problem more. The issue isn't just the name — users don't understand the value prop before they've tried it.", type:"Brain Dump", date:"Mar 25", time:"8:42 AM" },
-  { id:2, text:"The idea of a journal that opens straight to the cursor is about removing the activation energy of writing. Every extra tap is a reason not to.", type:"Inspiration", date:"Mar 24", time:"9:15 PM" },
-  { id:3, text:"Good run. 7 miles, felt strong the whole way. The trick was not eating before.", type:"Highlight", date:"Mar 23", time:"7:03 AM" },
-  { id:4, text:"Thinking about how content design changes when AI can generate first drafts. The job becomes more about judgment and less about production.", type:"Brain Dump", date:"Mar 22", time:"11:30 AM" },
-  { id:5, text:"Daughter said 'actually' correctly in context today. Completely unprompted.", type:"Highlight", date:"Mar 21", time:"6:58 PM" },
+  { id:1, text:"Sample entry — this is placeholder text. Replace it with your own thoughts, or delete it and start fresh.", type:"Brain Dump", date:"Aug 12", time:"9:00 AM" },
 ];
-const SEED_DRAFTS = [
-  { id:101, text:"Half-formed thought about the difference between content strategy and content design — they get collapsed all the time but", type:"Brain Dump", date:"Mar 24", time:"3:11 PM" },
-  { id:102, text:"", type:"Inspiration", date:"Mar 22", time:"10:00 AM" },
-];
+const SEED_DRAFTS = [];
 
 function loadState() {
   try { const r = localStorage.getItem(LS_KEY); if (r) return JSON.parse(r); } catch(e) {}
