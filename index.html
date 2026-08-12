@@ -151,9 +151,30 @@ const SEED_PUB = [
 ];
 const SEED_DRAFTS = [];
 
+// Earlier builds seeded five demo published entries and two demo drafts into
+// saved state, so browsers that already opened the app keep showing them even
+// after the seed data changed. Strip those rows once. Real entries are keyed by
+// Date.now(), so these small ids can only be the demo ones.
+const DEMO_IDS = [1, 2, 3, 4, 5, 101, 102];
+function stripDemoEntries(list) {
+  return Array.isArray(list) ? list.filter(e => !e || !DEMO_IDS.includes(e.id)) : list;
+}
+
 function loadState() {
-  try { const r = localStorage.getItem(LS_KEY); if (r) return JSON.parse(r); } catch(e) {}
-  return { published:SEED_PUB, drafts:SEED_DRAFTS, dark:false, startOn:"Write" };
+  try {
+    const r = localStorage.getItem(LS_KEY);
+    if (r) {
+      const s = JSON.parse(r);
+      if (!s.demoCleared) {
+        s.published = stripDemoEntries(s.published);
+        s.drafts    = stripDemoEntries(s.drafts);
+        s.demoCleared = true;
+        saveState(s);
+      }
+      return s;
+    }
+  } catch(e) {}
+  return { published:SEED_PUB, drafts:SEED_DRAFTS, dark:false, startOn:"Write", demoCleared:true };
 }
 function saveState(s) { try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch(e) {} }
 
