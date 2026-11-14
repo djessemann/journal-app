@@ -5,11 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="apple-mobile-web-app-title" content="Journal"/>
   <meta name="format-detection" content="telephone=no"/>
   <meta name="color-scheme" content="light dark"/>
-  <meta name="theme-color" content="#F8F7F4"/>
+  <script>
+    // iOS reads the status bar style and color only when the app opens, so set
+    // them from the saved appearance before anything draws. In dark mode the app
+    // draws behind the status bar so the dark background fills the top.
+    (function () {
+      var dark = false;
+      try { dark = !!(JSON.parse(localStorage.getItem('dsj_v3')) || {}).dark; } catch (e) {}
+      var bg = dark ? '#111110' : '#F8F7F4';
+      document.write(
+        '<meta name="apple-mobile-web-app-status-bar-style" content="' + (dark ? 'black-translucent' : 'default') + '"/>' +
+        '<meta name="theme-color" content="' + bg + '"/>'
+      );
+      if (dark) { document.documentElement.setAttribute('data-theme', 'dark'); document.documentElement.style.colorScheme = 'dark'; }
+    })();
+  </script>
   <title>Journal</title>
   <link rel="manifest" href="manifest.json"/>
   <link rel="icon" type="image/svg+xml" href="icon.svg"/>
@@ -18,7 +31,9 @@
   <link rel="stylesheet" href="fonts/atkinson-mono.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-    html, body { position: fixed; inset: 0; overflow: hidden; overscroll-behavior: none; background: #F8F7F4; }
+    html, body { position: fixed; inset: 0; overflow: hidden; overscroll-behavior: none; }
+    html { background: #F8F7F4; }
+    html[data-theme="dark"] { background: #111110; }
     #root { width: 100%; height: var(--app-h, 100dvh); overflow: hidden; }
     body {
       font-family: 'Atkinson Hyperlegible Mono', ui-monospace, Menlo, monospace;
@@ -248,11 +263,15 @@ function App() {
       return () => clearTimeout(t);
     }
   }, [screen]);
+  const firstTheme = useRef(true);
   useEffect(() => {
     var _a2;
     (_a2 = document.querySelector('meta[name="theme-color"]')) == null ? void 0 : _a2.setAttribute("content", T.bg);
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
-    document.documentElement.style.background = T.bg;
+    if (dark) document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
+    if (!firstTheme.current && window.navigator.standalone) window.location.reload();
+    firstTheme.current = false;
   }, [dark]);
   const reset = useCallback(() => {
     setText("");

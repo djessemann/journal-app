@@ -1,5 +1,5 @@
 // Bump the version whenever any cached file changes so installed apps update.
-var CACHE_NAME = 'journal-v2';
+var CACHE_NAME = 'journal-v3';
 var LOCAL_URLS = [
   './',
   './index.html',
